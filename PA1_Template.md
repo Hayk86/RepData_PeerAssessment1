@@ -1,3 +1,8 @@
+Setting global options
+----------------------
+
+    knitr::opts_chunk$set(echo = TRUE)
+
 Calling required libraries
 --------------------------
 
@@ -29,6 +34,7 @@ Calling required libraries
     ##     date
 
     library(lattice)
+    library(knitr)
 
 Reading data to R
 -----------------
