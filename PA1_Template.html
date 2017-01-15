@@ -124,6 +124,10 @@ $(document).ready(function () {
 </div>
 
 
+<div id="setting-global-options" class="section level2">
+<h2>Setting global options</h2>
+<pre class="r"><code>knitr::opts_chunk$set(echo = TRUE)</code></pre>
+</div>
 <div id="calling-required-libraries" class="section level2">
 <h2>Calling required libraries</h2>
 <pre class="r"><code>library(dplyr)</code></pre>
@@ -144,7 +148,8 @@ library(lubridate)</code></pre>
 <pre><code>## The following object is masked from 'package:base':
 ## 
 ##     date</code></pre>
-<pre class="r"><code>library(lattice)</code></pre>
+<pre class="r"><code>library(lattice)
+library(knitr)</code></pre>
 </div>
 <div id="reading-data-to-r" class="section level2">
 <h2>Reading data to R</h2>

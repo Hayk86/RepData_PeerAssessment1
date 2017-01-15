@@ -2,14 +2,20 @@
 title: "PA1_Template"
 author: "Hayk Grigoryan"
 date: "January 14, 2017"
-output: html_document
+output: md_document
 ---
+##Setting global options
+```{r setoptions, echo = TRUE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
 ##Calling required libraries
 ```{r libraries, results = "hide"}
 library(dplyr)
 library(ggplot2)
 library(lubridate)
 library(lattice)
+library(knitr)
 ```
 ##Reading data to R
 
@@ -18,7 +24,7 @@ data <- read.csv("./activity.csv")
 df <- tbl_df(data)
 df$date <- as.Date(df$date)
 ```
-
+--
 ##Calculating the summary and making a histogram
 
 ```{r summary}
