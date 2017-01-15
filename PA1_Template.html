@@ -151,9 +151,7 @@ library(lubridate)</code></pre>
 <pre class="r"><code>data &lt;- read.csv(&quot;./activity.csv&quot;)
 df &lt;- tbl_df(data)
 df$date &lt;- as.Date(df$date)</code></pre>
-</div>
-<div id="calculating-the-summary-and-making-a-histogram" class="section level2">
-<h2>Calculating the summary and making a histogram</h2>
+<p>– ##Calculating the summary and making a histogram</p>
 <pre class="r"><code>mean &lt;- mean(df$steps, na.rm = TRUE)
 median &lt;- median(df$steps, na.rm = TRUE)
 s &lt;- df %&gt;% group_by(date) %&gt;% summarize(daily_steps = sum(steps, na.rm = TRUE))

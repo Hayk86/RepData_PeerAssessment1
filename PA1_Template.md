@@ -37,8 +37,7 @@ Reading data to R
     df <- tbl_df(data)
     df$date <- as.Date(df$date)
 
-Calculating the summary and making a histogram
-----------------------------------------------
+-- \#\#Calculating the summary and making a histogram
 
     mean <- mean(df$steps, na.rm = TRUE)
     median <- median(df$steps, na.rm = TRUE)
@@ -93,4 +92,11 @@ The total number of steps taken each day when missing values are filled
 Looking at weekend effect
 -------------------------
 
-`{r weekend}------------------------------------000000 df <- df %>%          mutate(weekday = ifelse(weekdays(date)                  %in% c("Saturday", "Sunday"), "Weekend", "Weekday")) p <- df %>% group_by(interval, weekday) %>%          summarize(steps = mean(steps, na.rm = TRUE)) xyplot(steps ~ interval | weekday, p, type = 'l', layout = c(1,2))`
+    df <- df %>% 
+            mutate(weekday = ifelse(weekdays(date) 
+                    %in% c("Saturday", "Sunday"), "Weekend", "Weekday"))
+    p <- df %>% group_by(interval, weekday) %>% 
+            summarize(steps = mean(steps, na.rm = TRUE))
+    xyplot(steps ~ interval | weekday, p, type = 'l', layout = c(1,2))
+
+![](PA1_Template_files/figure-markdown_strict/weekend-1.png)
