@@ -1,7 +1,7 @@
 ---
 title: "PA1_Template"
 author: "Hayk Grigoryan"
-date: "January 14, 2017"
+date: "February 02, 2017"
 output: md_document
 ---
 ##Setting global options
@@ -24,18 +24,20 @@ data <- read.csv("./activity.csv")
 df <- tbl_df(data)
 df$date <- as.Date(df$date)
 ```
---
+
 ##Calculating the summary and making a histogram
 
 ```{r summary}
-mean <- mean(df$steps, na.rm = TRUE)
-median <- median(df$steps, na.rm = TRUE)
 s <- df %>% group_by(date) %>% summarize(daily_steps = sum(steps, na.rm = TRUE))
+mean <- mean(s$daily_steps)
+median <- median(s$daily_steps)
 hist(s$daily_steps, breaks = 20, main = "Histogram of Steps", xlab = "Daily Steps")
 ```
+
 The total number of steps taken each day 
-- Mean is `r mean` 
-- Median is `r median`
+
+* Mean      `r format(round(mean))` 
+* Median     `r format(round(median))`
 
 ##Daily walking pattern
 ```{r pattern}
@@ -51,32 +53,35 @@ minute <- minute(max)
 time <- sprintf("%s:%s",hour, minute)
 ```
 
-The interval of the day when the person is most active in walking is `r time`
+The interval of the day when the person is most active in walking is morning time `r time`
 
 ##Imputing missing values
+
+We input missing values using the mean values of each interval 
 ```{r impute_missing}
 miss <- sum(is.na(df$steps))
-impute.median <- function(x) replace(x, is.na(x), median(x, na.rm = TRUE))
-df <- df  %>% mutate(steps = impute.median(steps))
+impute.mean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))
+dk <- df  %>% mutate(steps = impute.mean(steps))
 ```
-Now when we calculated the missing values using the median values of each interval 
-it is time to see how it changed the median and mean values of the steps 
-taken each day.
+Now when we calculated the missing values it is time to see how it changed the median and mean values of the steps taken each day.
 
 ```{r summary_full}
-mean <- mean(df$steps, na.rm = TRUE)
-median <- median(df$steps, na.rm = TRUE)
-s <- df %>% group_by(date) %>% 
+sk <- dk %>% group_by(date) %>% 
         summarize(daily_steps = sum(steps, na.rm = TRUE))
+mean_f <- mean(sk$daily_steps)
+median_f <- median(sk$daily_steps)
 hist(s$daily_steps, breaks = 20, main = "Histogram of Steps", xlab = "Daily Steps")
 ```
 
 The total number of steps taken each day when missing values are filled
-- Mean is `r mean` 
-- Median is `r median`
+
+* Mean      `r format(round(mean_f))` 
+* Median    `r format(round(median_f))`
 
 
 ##Looking at weekend effect
+
+At weekend people wake up later and their walking activity is much dispersed throughout a day
 
 ```{r weekend}
 df <- df %>% 

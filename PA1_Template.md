@@ -8,8 +8,6 @@ Calling required libraries
 
     library(dplyr)
 
-    ## Warning: package 'dplyr' was built under R version 3.3.2
-
     ## 
     ## Attaching package: 'dplyr'
 
@@ -22,9 +20,10 @@ Calling required libraries
     ##     intersect, setdiff, setequal, union
 
     library(ggplot2)
-    library(lubridate)
 
-    ## Warning: package 'lubridate' was built under R version 3.3.2
+    ## Warning: package 'ggplot2' was built under R version 3.3.2
+
+    library(lubridate)
 
     ## 
     ## Attaching package: 'lubridate'
@@ -43,15 +42,20 @@ Reading data to R
     df <- tbl_df(data)
     df$date <- as.Date(df$date)
 
--- \#\#Calculating the summary and making a histogram
+Calculating the summary and making a histogram
+----------------------------------------------
 
-    mean <- mean(df$steps, na.rm = TRUE)
-    median <- median(df$steps, na.rm = TRUE)
     s <- df %>% group_by(date) %>% summarize(daily_steps = sum(steps, na.rm = TRUE))
+    mean <- mean(s$daily_steps)
+    median <- median(s$daily_steps)
     hist(s$daily_steps, breaks = 20, main = "Histogram of Steps", xlab = "Daily Steps")
 
-![](PA1_Template_files/figure-markdown_strict/summary-1.png) The total
-number of steps taken each day - Mean is 37.3825996 - Median is 0
+![](PA1_Template_files/figure-markdown_strict/summary-1.png)
+
+The total number of steps taken each day
+
+-   Mean 9354
+-   Median 10395
 
 Daily walking pattern
 ---------------------
@@ -71,32 +75,38 @@ Daily walking pattern
     time <- sprintf("%s:%s",hour, minute)
 
 The interval of the day when the person is most active in walking is
-8:35
+morning time 8:35
 
 Imputing missing values
 -----------------------
 
+We input missing values using the mean values of each interval
+
     miss <- sum(is.na(df$steps))
-    impute.median <- function(x) replace(x, is.na(x), median(x, na.rm = TRUE))
-    df <- df  %>% mutate(steps = impute.median(steps))
+    impute.mean <- function(x) replace(x, is.na(x), mean(x, na.rm = TRUE))
+    dk <- df  %>% mutate(steps = impute.mean(steps))
 
-Now when we calculated the missing values using the median values of
-each interval it is time to see how it changed the median and mean
-values of the steps taken each day.
+Now when we calculated the missing values it is time to see how it
+changed the median and mean values of the steps taken each day.
 
-    mean <- mean(df$steps, na.rm = TRUE)
-    median <- median(df$steps, na.rm = TRUE)
-    s <- df %>% group_by(date) %>% 
+    sk <- dk %>% group_by(date) %>% 
             summarize(daily_steps = sum(steps, na.rm = TRUE))
+    mean_f <- mean(sk$daily_steps)
+    median_f <- median(sk$daily_steps)
     hist(s$daily_steps, breaks = 20, main = "Histogram of Steps", xlab = "Daily Steps")
 
 ![](PA1_Template_files/figure-markdown_strict/summary_full-1.png)
 
 The total number of steps taken each day when missing values are filled
-- Mean is 32.4799636 - Median is 0
+
+-   Mean 10766
+-   Median 10766
 
 Looking at weekend effect
 -------------------------
+
+At weekend people wake up later and their walking activity is much
+dispersed throughout a day
 
     df <- df %>% 
             mutate(weekday = ifelse(weekdays(date) 
